@@ -11,9 +11,9 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 # account details
-USERNAME = 'YOUR USERNAME HERE'
-PASSWORD = 'YOUR PASSWORD HERE'
-EMAIL = 'some_email@gmail.com'
+USERNAME = 'chiexplores'
+PASSWORD = 'wattsup'
+EMAIL = 'chhuynh7@gmail.com'
 ORG = 'some org name'
 
 # request details
@@ -72,6 +72,20 @@ def index(token, ba):
     return rsp.json()
 
 
+def indexByLatLang(token, latitude, longitude):
+    url = 'https://api2.watttime.org/index'
+    headers = {'Authorization': 'Bearer {}'.format(token)}
+    params = {
+        'latitude': latitude,
+        'longitude': longitude
+    }
+
+    rsp = requests.get(url, headers=headers, params=params)
+    # print(rsp.text)  # uncomment to see raw response
+    return rsp.json()
+
+
+
 def forecast(token, ba, starttime=None, endtime=None):
     url = 'https://api2.watttime.org/forecast'
     headers = {'Authorization': 'Bearer {}'.format(token)}
@@ -109,8 +123,12 @@ if not token:
           'of this file.')
     exit()
 
-realtime_index = index(token, BA)
-print(realtime_index)
+# realtime_index = index(token, BA)
+# print(realtime_index)
+
+realtime_index_lat_lang = indexByLatLang(token, 42.3, -72.52 )
+print(realtime_index_lat_lang)
+# {'freq': '300', 'ba': 'ISONE_WCMA', 'percent': '60', 'point_time': '2020-06-18T05:30:00Z'}
 
 print('Please note: the following endpoints require a WattTime subscription')
 historical_moer = data(token, BA, START, END)
@@ -123,3 +141,4 @@ forecast_moer = forecast(token, BA, START, END)
 print(forecast_moer)
 
 historical(token, BA)  # Writes zip file to current ditectory
+
